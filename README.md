@@ -14,19 +14,19 @@ Python project template 🐍
 
 ## 💡 About
 
-This repository containts a python-purpose
-[`copier`](https://copier.readthedocs.io) template.
+This repository contains a [`copier`](https://copier.readthedocs.io) template
+for creating Python projects.
 
 You can view the example project generated from this template
 [**here**](https://github.com/quickplates/python-example).
 
 ## 📜 Usage
 
-To create a new project from this template,
+To create a new project from this template in the current directory,
 make sure you have [`copier`](https://copier.readthedocs.io) installed and run:
 
 ```sh
-copier https://github.com/quickplates/python path/to/destination
+copier gh:quickplates/python .
 ```
 
 ## 🚀 Features

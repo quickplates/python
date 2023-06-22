@@ -1,8 +1,7 @@
 ---
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 0.2.1
-_src_path: https://github.com/quickplates/meta
+_commit: 0.3.0
+_src_path: gh:quickplates/meta
 description: Python project template 🐍
-project_name: python
-repository: https://github.com/quickplates/python
+projectname: python
 username: quickplates

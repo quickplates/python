@@ -35,10 +35,12 @@
         system,
         ...
       }: let
+        pytest = pkgs.python3.withPackages (ps: [ps.pytest ps.plumbum]);
+        nil = pkgs.nil;
+        task = pkgs.go-task;
+        trunk = pkgs.trunk-io;
         # Build copier manually, because the nixpkgs version is outdated
         copier = pkgs.callPackage ./copier.nix {};
-        # Define it here to avoid repetition
-        testPkgs = pkgs.python3.withPackages (ps: [ps.pytest ps.plumbum]);
       in {
         # Override pkgs argument
         _module.args.pkgs = import inputs.nixpkgs {
@@ -46,6 +48,10 @@
           config = {
             # Allow packages with non-free licenses
             allowUnfree = true;
+            # Allow packages with broken dependencies
+            allowBroken = true;
+            # Allow packages with unsupported system
+            allowUnsupportedSystem = true;
           };
         };
 
@@ -58,11 +64,11 @@
             name = "dev";
 
             packages = [
+              pytest
+              nil
+              task
+              trunk
               copier
-              testPkgs
-              pkgs.nil
-              pkgs.go-task
-              pkgs.trunk-io
             ];
           };
 
@@ -70,8 +76,8 @@
             name = "template";
 
             packages = [
+              task
               copier
-              pkgs.go-task
             ];
           };
 
@@ -79,8 +85,8 @@
             name = "lint";
 
             packages = [
-              pkgs.go-task
-              pkgs.trunk-io
+              task
+              trunk
             ];
           };
 
@@ -88,9 +94,9 @@
             name = "test";
 
             packages = [
+              pytest
+              task
               copier
-              testPkgs
-              pkgs.go-task
             ];
           };
         };

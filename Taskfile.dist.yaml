@@ -2,26 +2,6 @@
 version: "3"
 
 tasks:
-  fmt:
-    desc: Format files
-    cmds:
-      - >
-        trunk
-        fmt
-        {{.CLI_ARGS}}
-  lint:
-    desc: Lint files
-    cmds:
-      - >
-        trunk
-        check
-        {{.CLI_ARGS}}
-  trunk:
-    desc: Run trunk
-    cmds:
-      - >
-        trunk
-        {{.CLI_ARGS}}
   fetch-template:
     desc: Fetch template updates
     interactive: true
@@ -32,42 +12,50 @@ tasks:
     cmds:
       - >
         copier
+        update
         --answers-file
         .copier-answers.yaml
-        {{.CLI_ARGS}}
-        update
-  copier:
-    desc: Run copier
-    env:
-      GIT_CONFIG_COUNT: 1
-      GIT_CONFIG_KEY_0: commit.gpgsign
-      GIT_CONFIG_VALUE_0: false
-    cmds:
-      - >
-        copier
-        {{.CLI_ARGS}}
+        {{ .CLI_ARGS }}
   update-flake-lock:
     desc: Update flake.lock
     cmds:
       - >
         nix
+        --accept-flake-config
         --extra-experimental-features 'nix-command flakes'
+        --no-warn-dirty
         flake
         update
-        {{.CLI_ARGS}}
+        {{ .CLI_ARGS }}
+  fmt:
+    desc: Format files
+    cmds:
+      - >
+        trunk
+        fmt
+        {{ .CLI_ARGS }}
+  lint:
+    desc: Lint files
+    cmds:
+      - >
+        trunk
+        check
+        {{ .CLI_ARGS }}
   clean:
-    desc: Clean the project
+    desc: Clean build files
     cmds:
       - >
         rm
         --recursive
         --force
-        {{.CLI_ARGS}}
+        {{ .CLI_ARGS }}
         ./build/
   build:
     desc: Build the project
     deps:
-      - clean
+      - task: clean
+        vars:
+          CLI_ARGS: ""
     env:
       GIT_CONFIG_COUNT: 1
       GIT_CONFIG_KEY_0: commit.gpgsign
@@ -75,13 +63,14 @@ tasks:
     cmds:
       - >
         copier
+        copy
         --overwrite
         --defaults
         --vcs-ref HEAD
         --data 'username=quickplates'
         --data 'project_name=python-example'
         --data 'description=Python project example 🐍'
-        {{.CLI_ARGS}}
+        {{ .CLI_ARGS }}
         ./
         ./build/
   test:
@@ -90,4 +79,4 @@ tasks:
     cmds:
       - >
         pytest
-        {{.CLI_ARGS}}
+        {{ .CLI_ARGS }}
