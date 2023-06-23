@@ -1,12 +1,13 @@
-<h1 align="center">{{ project_name }}</h1>
+<h1 align="center">{{ projectname }}</h1>
 
 <div align="center">
 
 {{ description }}
 
-[![Lint]({{ repository }}/actions/workflows/lint.yaml/badge.svg)]({{ repository }}/actions/workflows/lint.yaml)
+[![Lint](https://github.com/{{ username }}/{{ projectname }}/actions/workflows/lint.yaml/badge.svg)](https://github.com/{{ username }}/{{ projectname }}/actions/workflows/lint.yaml)
+[![Test](https://github.com/{{ username }}/{{ projectname }}/actions/workflows/test.yaml/badge.svg)](https://github.com/{{ username }}/{{ projectname }}/actions/workflows/test.yaml)
 {%- if docs %}
-[![Docs]({{ repository }}/actions/workflows/docs.yaml/badge.svg)]({{ repository }}/actions/workflows/docs.yaml)
+[![Docs](https://github.com/{{ username }}/{{ projectname }}/actions/workflows/docs.yaml/badge.svg)](https://github.com/{{ username }}/{{ projectname }}/actions/workflows/docs.yaml)
 {%- endif %}
 
 </div>
@@ -24,10 +25,10 @@ Write here whatever you want to tell them.
 ## 📄 Further Reading
 
 More in-depth documentation can be found
-[here]({{ docs_url }}).
+[here]({{ docsurl }}).
 {%- endif %}
 
 ## 💻 Development
 
 Read more about how to contribute and develop the project
-[here]({{ repository }}/blob/main/CONTRIBUTING.md).
+[here](https://github.com/{{ username }}/{{ projectname }}/blob/main/CONTRIBUTING.md).

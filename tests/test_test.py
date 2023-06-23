@@ -19,7 +19,7 @@ def data() -> dict[str, str]:
         "repository": "https://github.com/quickplates/python-example",
         "docs": "true",
         "docsurl": "https://quickplates.github.io/python-example",
-        "executable": "false",
+        "executable": "true",
         "pypi": "false",
         "registry": "false",
     }
@@ -50,15 +50,15 @@ def copied_template_directory(
             yield tmp_path
 
 
-def test_docs(copied_template_directory: Path) -> None:
-    """Test that the documentation can be built without errors."""
+def test_test(copied_template_directory: Path) -> None:
+    """Test that tests pass without errors."""
 
     with CWD(copied_template_directory):
         local.cmd.nix(
             "develop",
-            ".#docs",
+            ".#test",
             "--command",
             "--",
             "task",
-            "test-docs",
+            "test",
         )

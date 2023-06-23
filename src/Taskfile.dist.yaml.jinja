@@ -2,26 +2,6 @@
 version: "3"
 
 tasks:
-  fmt:
-    desc: Format files
-    cmds:
-      - >
-        trunk
-        fmt
-        {{ '{{.CLI_ARGS}}' }}
-  lint:
-    desc: Lint files
-    cmds:
-      - >
-        trunk
-        check
-        {{ '{{.CLI_ARGS}}' }}
-  trunk:
-    desc: Run trunk
-    cmds:
-      - >
-        trunk
-        {{ '{{.CLI_ARGS}}' }}
   fetch-template:
     desc: Fetch template updates
     interactive: true
@@ -36,19 +16,43 @@ tasks:
         .copier-answers.yaml
         {{ '{{.CLI_ARGS}}' }}
         update
-  copier:
-    desc: Run copier
-    env:
-      GIT_CONFIG_COUNT: 1
-      GIT_CONFIG_KEY_0: commit.gpgsign
-      GIT_CONFIG_VALUE_0: false
+  update-flake-lock:
+    desc: Update flake.lock
     cmds:
       - >
-        copier
+        nix
+        --accept-flake-config
+        --extra-experimental-features 'nix-command flakes'
+        --no-warn-dirty
+        flake
+        update
+        {{ '{{.CLI_ARGS}}' }}
+  fmt:
+    desc: Format files
+    cmds:
+      - >
+        trunk
+        fmt
+        {{ '{{.CLI_ARGS}}' }}
+  lint:
+    desc: Lint files
+    cmds:
+      - >
+        trunk
+        check
         {{ '{{.CLI_ARGS}}' }}
   {%- if docs %}
   install-docs:
     desc: Install docs dependencies
+    dir: docs
+    cmds:
+      - >
+        npm
+        install
+        {{ '{{.CLI_ARGS}}' }}
+  install-docs-quietly:
+    desc: Install docs dependencies quietly
+    internal: true
     dir: docs
     cmds:
       - >
@@ -59,13 +63,12 @@ tasks:
         --no-fund
         --quiet
         --no-progress
-        {{ '{{.CLI_ARGS}}' }}
   docs:
     desc: Run docusaurus
     dir: docs
     interactive: true
     deps:
-      - install-docs
+      - task: install-docs-quietly
     cmds:
       - >
         npm
@@ -77,7 +80,7 @@ tasks:
     desc: Test docs
     dir: docs
     deps:
-      - install-docs
+      - task: install-docs-quietly
     cmds:
       - >
         npm
@@ -89,7 +92,7 @@ tasks:
     desc: Update docs dependencies
     dir: docs
     deps:
-      - install-docs
+      - task: install-docs-quietly
     cmds:
       - >
         npm
@@ -98,12 +101,165 @@ tasks:
         --
         {{ '{{.CLI_ARGS}}' }}
   {%- endif %}
-  update-flake-lock:
-    desc: Update flake.lock
+  clean:
+    desc: Clean virtualenv
     cmds:
       - >
-        nix
-        --extra-experimental-features 'nix-command flakes'
-        flake
-        update
+        rm
+        --recursive
+        --force
         {{ '{{.CLI_ARGS}}' }}
+        .venv
+  venv:
+    desc: Create virtualenv
+    deps:
+      - task: clean
+        vars:
+          CLI_ARGS: ""
+    cmds:
+      - >
+        python
+        -m
+        venv
+        {{ '{{.CLI_ARGS}}' }}
+        .venv
+  install:
+    desc: Install package
+    deps:
+      - task: venv
+        vars:
+          CLI_ARGS: ""
+    cmds:
+      - >
+        source
+        .venv/bin/activate
+        &&
+        poetry
+        install
+        --sync
+        --no-interaction
+        {{ '{{.CLI_ARGS}}' }}
+  install-quietly:
+    desc: Install package quietly
+    internal: true
+    deps:
+      - task: venv
+        vars:
+          CLI_ARGS: ""
+    cmds:
+      - >
+        source
+        .venv/bin/activate
+        &&
+        poetry
+        install
+        --sync
+        --no-interaction
+        --quiet
+  update:
+    desc: Update dependencies
+    deps:
+      - task: venv
+        vars:
+          CLI_ARGS: ""
+    cmds:
+      - >
+        source
+        .venv/bin/activate
+        &&
+        poetry
+        update
+        --no-interaction
+        {{ '{{.CLI_ARGS}}' }}
+  update-lock:
+    desc: Update dependencies versions in lock file
+    deps:
+      - task: venv
+        vars:
+          CLI_ARGS: ""
+    cmds:
+      - >
+        source
+        .venv/bin/activate
+        &&
+        poetry
+        lock
+        --no-interaction
+        {{ '{{.CLI_ARGS}}' }}
+  bump:
+    desc: Bump version
+    cmds:
+      - >
+        source
+        .venv/bin/activate
+        &&
+        poetry
+        version
+        {{ '{{.CLI_ARGS | default "patch"}}' }}
+  test:
+    desc: Run tests
+    deps:
+      - task: install-quietly
+    cmds:
+      - >
+        source
+        .venv/bin/activate
+        &&
+        pytest
+        {{ '{{.CLI_ARGS}}' }}
+  {%- if executable %}
+  run:
+    desc: Run package
+    deps:
+      - task: install-quietly
+    cmds:
+      - >
+        source
+        .venv/bin/activate
+        &&
+        python-example
+        {{ '{{.CLI_ARGS}}' }}
+  docker-build:
+    desc: Build docker image
+    cmds:
+      - >
+        docker
+        build
+        --tag
+        python-example
+        {{ '{{.CLI_ARGS}}' }}
+        .
+  docker:
+    desc: Run docker image
+    deps:
+      - task: docker-build
+        vars:
+          CLI_ARGS: ""
+    cmds:
+      - >
+        docker
+        run
+        --rm
+        --interactive
+        --tty
+        python-example
+        {{ '{{.CLI_ARGS}}' }}
+  {%- endif %}
+  {%- if pypi %}
+  publish:
+    desc: Publish package
+    deps:
+      - task: venv
+        vars:
+          CLI_ARGS: ""
+    cmds:
+      - >
+        source
+        .venv/bin/activate
+        &&
+        poetry
+        publish
+        --no-interaction
+        --build
+        {{ '{{.CLI_ARGS}}' }}
+  {%- endif %}

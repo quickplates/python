@@ -34,7 +34,16 @@ copier gh:quickplates/python .
 - fully reproducible development environments with
   [`Dev Containers`](https://code.visualstudio.com/docs/remote/containers)
   and [`Nix`](https://nixos.org)
+- local virtual environments with [`venv`](https://docs.python.org/3/library/venv.html)
+- dependency management with [`Poetry`](https://python-poetry.org)
 - automatic environment activation with [`direnv`](https://direnv.net)
+- testing with [`pytest`](https://pytest.org)
+- versatile configuration with [`OmegaConf`](https://omegaconf.readthedocs.io)
+  and [`Pydantic`](https://docs.pydantic.dev/latest)
+- expressive logging with [`Rich`](https://rich.readthedocs.io)
+- pleasant command line interfaces with [`Typer`](https://typer.tiangolo.com)
+- optimized custom [`Docker`](https://www.docker.com) images
+- automatic releases on [`PyPI`](https://pypi.org) and `GitHub Container Registry`
 - running tasks with [`Task`](https://taskfile.dev)
 - formatting and linting with [`Trunk`](https://trunk.io)
 - easy to write and nice looking documentation

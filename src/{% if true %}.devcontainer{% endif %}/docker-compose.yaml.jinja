@@ -20,6 +20,8 @@ services:
       - shellhistory:/shellhistory
       # Mount the trunk cache into the container at /trunk
       - trunk:/trunk
+      # Mount poetry cache into the container at /poetry
+      - poetry:/poetry
       {%- if docs %}
       # Mount the docs npm modules into the container at appropriate location
       - docsmodules:/workspace/docs/node_modules
@@ -32,6 +34,7 @@ volumes:
   nix: {}
   shellhistory: {}
   trunk: {}
+  poetry: {}
   {%- if docs %}
   docsmodules: {}
   npm: {}

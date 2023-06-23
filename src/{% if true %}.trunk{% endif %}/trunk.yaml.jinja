@@ -13,7 +13,7 @@ runtimes:
     - go@1.19.5
     # Needed for prettier, markdownlint{% if docs %}, svgo, eslint{% endif %}
     - node@18.12.1
-    # Needed for yamllint
+    # Needed for yamllint, black, ruff
     - python@3.10.8
 lint:
   ignore:
@@ -69,6 +69,13 @@ lint:
     - shfmt@3.5.0
     # GitHub Actions linting
     - actionlint@1.6.24
+    # Python formatting
+    - black@23.3.0
+    - isort@5.12.0
+    # Python linting
+    - ruff@0.0.270
+    # TOML
+    - taplo@0.8.0
     {%- if docs %}
     # SVG formatting
     - svgo@3.0.2
