@@ -12,11 +12,16 @@ def data() -> dict[str, str]:
 
     return {
         "username": "quickplates",
-        "project_name": "python-example",
+        "email": "quickplates@mail.spietras.dev",
+        "projectname": "python-example",
+        "importname": "python_example",
         "description": "Python project example 🐍",
         "repository": "https://github.com/quickplates/python-example",
         "docs": "true",
-        "docs_url": "https://quickplates.github.io/python-example",
+        "docsurl": "https://quickplates.github.io/python-example",
+        "executable": "true",
+        "pypi": "true",
+        "registry": "true",
     }
 
 

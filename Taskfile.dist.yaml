@@ -68,7 +68,8 @@ tasks:
         --defaults
         --vcs-ref HEAD
         --data 'username=quickplates'
-        --data 'project_name=python-example'
+        --data 'email=quickplates@mail.spietras.dev'
+        --data 'projectname=python-example'
         --data 'description=Python project example 🐍'
         {{ .CLI_ARGS }}
         ./

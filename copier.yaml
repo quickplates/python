@@ -5,29 +5,49 @@ username:
   type: str
   help: Your GitHub username
 
-project_name:
+email:
+  type: str
+  help: Your email address
+
+projectname:
   type: str
   help: The name of your project
+
+importname:
+  type: str
+  help: The name you will use to import your package in Python code
+  default: "{{ projectname | lower | replace('-', '_') }}"
 
 description:
   type: str
   help: A short description of your project
-
-repository:
-  type: str
-  help: The URL of the GitHub repository where you will host your project
-  default: "https://github.com/{{ username }}/{{ project_name }}"
 
 docs:
   type: bool
   help: Whether to include a documentation site for your project
   default: true
 
-docs_url:
+docsurl:
   type: str
   help: The URL of the documentation site for your project
-  default: "https://{{ username }}.github.io/{{ project_name }}"
+  default: "https://{{ username }}.github.io/{{ projectname }}"
   when: "{{ docs }}"
+
+executable:
+  type: bool
+  help: Whether your project will be an executable
+  default: true
+
+pypi:
+  type: bool
+  help: Whether your project will be published on PyPI
+  default: false
+
+registry:
+  type: bool
+  help: Whether you want to publish Docker images to a GitHub Container Registry
+  default: true
+  when: "{{ executable }}"
 
 # Configuration
 

@@ -11,12 +11,12 @@ The whole development environment will be running inside a Docker container.
 If you open the project in Visual Studio Code,
 you should be prompted to reopen the project in a Dev Container.
 You can also click
-[here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{ repository }})
+[here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/{{ username }}/{{ projectname }})
 or on the badge below to tell Visual Studio Code to open the project in a Dev Container.
 
 <div align="center">
 
-[![Open in Dev Container](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url={{ repository }})
+[![Open in Dev Container](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/{{ username }}/{{ projectname }})
 
 </div>
 
@@ -104,13 +104,91 @@ If you use the Dev Container setup,
 you will have the `Trunk` extension installed in Visual Studio Code.
 `Trunk` will be set as the default formatter for all files,
 so you can format with it by using any editor formatting features.
+
+## 🪶 Using `poetry`
+
+This project uses [`Poetry`](https://python-poetry.org) to manage dependencies.
+You can find the `pyproject.toml` file in the project root.
+This file contains all the dependencies and their versions.
+
+To install the project with all dependencies,
+you can run the following command:
+
+```sh
+task install
+```
+
+This will install all dependencies and create a virtual environment for the project.
+
+To update the dependencies to their latest versions that satisfy the constraints,
+you can run the following command:
+
+```sh
+task update
+```
+
+This will update the `poetry.lock` file with the latest versions of the dependencies.
+{%- if executable %}
+
+## 🐋 Docker
+
+You can run the application in a [`Docker`](https://www.docker.com) container.
+
+To do this, just run the following command:
+
+```sh
+task docker
+```
+
+This will build a Docker image and run the application in a container.
+{%- endif %}
+
+## 🧪 Testing
+
+This project uses [`pytest`](https://pytest.org) for testing.
+You can find all tests in the `tests` directory.
+
+To run all tests, you can run:
+
+```sh
+task test
+```
+{%- if pypi and registry %}
+
+## 📦 Releases
+
+Every time you create a new release on GitHub,
+a GitHub Actions workflow will automatically build and publish a new Docker image
+to the GitHub Container Registry.
+You can find the GitHub Actions workflow that does this in `.github/workflows/registry.yml`.
+
+Additionally, a GitHub Actions workflow will automatically publish a new version
+of the package to PyPI.
+You can find the GitHub Actions workflow that does this in `.github/workflows/pypi.yml`.
+{%- elif pypi %}
+
+## 📦 Releases
+
+Every time you create a new release on GitHub,
+a GitHub Actions workflow will automatically publish a new version
+of the package to PyPI.
+You can find the GitHub Actions workflow that does this in `.github/workflows/pypi.yml`.
+{%- elif registry %}
+
+## 📦 Releases
+
+Every time you create a new release on GitHub,
+a GitHub Actions workflow will automatically build and publish a new Docker image
+to the GitHub Container Registry.
+You can find the GitHub Actions workflow that does this in `.github/workflows/registry.yml`.
+{%- endif %}
 {%- if docs %}
 
 ## 📄 Docs
 
 This project uses [`Docusaurus`](https://docusaurus.io) to generate documentation.
 The documentation is hosted on GitHub Pages and can be found
-[here]({{ docs_url }}).
+[here]({{ docsurl }}).
 All the documentation files are located in the `docs` directory.
 
 To build and serve the documentation locally,
