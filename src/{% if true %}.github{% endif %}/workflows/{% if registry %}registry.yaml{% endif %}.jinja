@@ -41,7 +41,7 @@ jobs:
             ghcr.io/{{ username }}/{{ projectname }}\
             :latest,\
             ghcr.io/{{ username }}/{{ projectname }}\
-            :{{ '{{ github.event.release.tag_name }}' }}"
+            :{{ '${{ github.event.release.tag_name }}' }}"
           # Cache Docker layers between builds
           cache-from: {{ 'type=gha, scope=${{ github.workflow }}' }}
           cache-to: {{ 'type=gha, mode=max, scope=${{ github.workflow }}' }}
