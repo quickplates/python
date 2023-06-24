@@ -244,7 +244,7 @@ tasks:
         source
         .venv/bin/activate
         &&
-        python-example
+        {{ projectname }}
         {{ '{{ .CLI_ARGS }}' }}
   docker-build:
     desc: Build docker image
@@ -253,7 +253,7 @@ tasks:
         docker
         build
         --tag
-        python-example
+        {{ projectname }}
         {{ '{{ .CLI_ARGS }}' }}
         .
   docker:
@@ -271,7 +271,7 @@ tasks:
         --tty
         --network
         host
-        python-example
+        {{ projectname }}
         {{ '{{ .CLI_ARGS }}' }}
   {%- endif %}
   {%- if pypi %}
