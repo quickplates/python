@@ -36,14 +36,18 @@
         ...
       }: let
         python = pkgs.python311;
+        {%- if docs %}
         node = pkgs.nodejs;
+        {%- endif %}
         nil = pkgs.nil;
         task = pkgs.go-task;
         trunk = pkgs.trunk-io;
         poetry = pkgs.poetry;
         copier = pkgs.copier;
+        {%- if executable %}
         tini = pkgs.tini;
         su-exec = pkgs.su-exec;
+        {%- endif %}
       in {
         # Override pkgs argument
         _module.args.pkgs = import inputs.nixpkgs {
@@ -68,7 +72,9 @@
 
             packages = [
               python
+              {%- if docs %}
               node
+              {%- endif %}
               nil
               task
               trunk
