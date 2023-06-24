@@ -1,14 +1,13 @@
-import logging
 from typing import Optional
 
 import typer
 
-from {{ importname }}.config import Config, ConfigError
+from {{ importname }}.cli import CliBuilder
+from {{ importname }}.config import ConfigBuilder, ConfigError
+from {{ importname }}.console import ConsoleBuilder, EmergencyConsoleBuilder
 from {{ importname }}.foo import foo
-from {{ importname }}.log import Logging, LoggingVerbosity
 
-cli = typer.Typer()
-logger = logging.getLogger(__name__)
+cli = CliBuilder().build()
 
 
 @cli.command()
@@ -26,27 +25,23 @@ def main(
         "-c",
         help="Configuration entries.",
     ),
-    verbosity: LoggingVerbosity = typer.Option(
-        LoggingVerbosity.INFO,
-        "--verbosity",
-        "-v",
-        help="Verbosity level.",
-    ),
 ) -> None:
     """Main entry point."""
 
-    Logging.configure(verbosity)
-
-    logger.info("Loading config...")
     try:
-        cfg = Config.load(config_file, config_overrides)
+        config = ConfigBuilder(config_file, config_overrides).build()
     except ConfigError as e:
-        logger.exception("Failed to load config!", exc_info=e)
+        console = EmergencyConsoleBuilder().build()
+        console.print("Failed to load config!")
+        console.print_exception()
         raise typer.Exit(1) from e
-    logger.info("Config loaded!")
 
-    logger.info(f"Config: {cfg}")
-    logger.info(f"foo() = {foo()}")
+    console = ConsoleBuilder(config).build()
+
+    console.print("Config loaded!")
+
+    console.print(f"Config: {config}")
+    console.print(f"foo() = {foo()}")
 
 
 if __name__ == "__main__":
