@@ -14,8 +14,9 @@ python = "^3.11"
 # Pydantic and OmegaConf are used for configuration
 pydantic = { version = "^1.10", extras = ["dotenv"] }
 omegaconf = "^2.3"
-# Typer makes it easy to build CLI apps
+# Typer and Rich make it easy to build CLI apps
 typer = { version = "^0.9", extras = ["all"] }
+rich = "^13.4"
 {%- endif %}
 
 [tool.poetry.group.test.dependencies]
