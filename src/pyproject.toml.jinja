@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "{{ projectname}}"
+name = "{{ projectname }}"
 version = "0.1.0"
 description = "{{ description }}"
 license = "MIT"
@@ -25,7 +25,7 @@ pytest = "^7"
 
 [tool.poetry.scripts]
 # Register CLI
-{{ projectname}} = "{{ importname}}.__main__:cli"
+{{ projectname }} = "{{ importname }}.__main__:cli"
 {%- endif %}
 
 # See: https://python-poetry.org/docs/pyproject/#poetry-and-pep-517
