@@ -40,8 +40,8 @@ copier gh:quickplates/python .
 - testing with [`pytest`](https://pytest.org)
 - versatile configuration with [`OmegaConf`](https://omegaconf.readthedocs.io)
   and [`Pydantic`](https://docs.pydantic.dev/latest)
-- expressive logging with [`Rich`](https://rich.readthedocs.io)
 - pleasant command line interfaces with [`Typer`](https://typer.tiangolo.com)
+  and [`Rich`](https://rich.readthedocs.io)
 - optimized custom [`Docker`](https://www.docker.com) images
 - automatic releases on [`PyPI`](https://pypi.org) and `GitHub Container Registry`
 - running tasks with [`Task`](https://taskfile.dev)
